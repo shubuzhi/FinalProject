@@ -1,0 +1,568 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../images/favicon.ico" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Homenaje' rel='stylesheet' type='text/css'>
+   
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>My Trips</title>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style type="text/css">
+    .pac-container:after {
+        /* Disclaimer: not needed to show 'powered by Google' if also a Google Map is shown */
+        background-image: none !important;
+        height: 0px;
+    }
+    
+    @media screen and (max-width: 480px) {
+        th {
+            font-size: 8px;
+            font-weight: normal;
+        }
+        td {
+            font-size: 8px;
+        }
+    }
+    
+    .table>thead:first-child>tr:first-child>th {
+        border-top: 0;
+        border-bottom: 0;
+    }
+    
+    .table>tbody>tr>td,
+    .table>tbody>tr>th,
+    .table>tfoot>tr>td,
+    .table>tfoot>tr>th,
+    .table>thead>tr>td,
+    .table>thead>tr>th {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #1F2739;
+    }
+    /*
+Force table width to 100%
+*/
+    
+    table.table-fixedheader {
+        width: 100%;
+    }
+    /*
+Set table elements to block mode.  (Normally they are inline).
+This allows a responsive table, such as one where columns can be stacked
+if the display is narrow.
+*/
+    
+    table.table-fixedheader,
+    table.table-fixedheader>thead,
+    table.table-fixedheader>tbody,
+    table.table-fixedheader>thead>tr,
+    table.table-fixedheader>tbody>tr,
+    table.table-fixedheader>thead>tr>th,
+    table.table-fixedheader>tbody>td {
+        display: block;
+    }
+    
+    table.table-fixedheader>thead>tr:after,
+    table.table-fixedheader>tbody>tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+    /*
+When scrolling the table, actually it is only the tbody portion of the
+table that scrolls (not the entire table: we want the thead to remain
+fixed).  We must specify an explicit height for the tbody.  We include
+100px as a default, but it can be overridden elsewhere.
+
+Also, we force the scrollbar to always be displayed so that the usable
+width for the table contents doesn't change (such as becoming narrower
+when a scrollbar is visible and wider when it is not).
+*/
+    
+    table.table-fixedheader>tbody {
+        overflow-y: scroll;
+        height: 100px;
+    }
+    /*
+We really don't want to scroll the thead contents, but we want to force
+a scrollbar to be displayed anyway so that the usable width of the thead
+will exactly match the tbody.
+*/
+    
+    table.table-fixedheader>thead {
+        overflow-y: scroll;
+    }
+    /*
+For browsers that support it (webkit), we set the background color of
+the unneeded scrollbar in the thead to make it invisible.  (Setting
+visiblity: hidden defeats the purpose, as this alters the usable width
+of the thead.)
+*/
+    
+    table.table-fixedheader>thead::-webkit-scrollbar {
+        /*background-color: inherit;*/
+    }
+    
+    table.table-fixedheader>thead>tr>th:after,
+    table.table-fixedheader>tbody>tr>td:after {
+        content: ' ';
+        display: table-cell;
+        visibility: hidden;
+        clear: both;
+    }
+    /*
+We want to set <th> and <td> elements to float left.
+We also must explicitly set the width for each column (both for the <th>
+and the <td>).  We set to 20% here a default placeholder, but it can be
+overridden elsewhere.
+*/
+    
+    table.table-fixedheader>thead tr th,
+    table.table-fixedheader>tbody tr td {
+        float: left;
+        word-wrap: break-word;
+    }
+    /*  
+    Side Navigation Menu V2, RWD
+    ===================
+    License:
+    http://goo.gl/EaUPrt
+    ===================
+    Author: @PableraShow
+
+ */
+    
+    @charset "UTF-8";
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+    body {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        line-height: 1.42em;
+        color: #A7A1AE;
+        background-color: #1F2739;
+    }
+    
+    h1 {
+        font-size: 3em;
+        font-weight: 300;
+        line-height: 1em;
+        text-align: center;
+        color: #4DC3FA;
+    }
+    
+    h2 {
+        font-size: 1em;
+        font-weight: 300;
+        text-align: center;
+        display: block;
+        line-height: 1em;
+        padding-bottom: 2em;
+    }
+    
+    h2 a {
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+    
+    .blue {
+        color: #185875;
+    }
+    
+    .yellow {
+        color: #FFF842;
+    }
+    
+    .containertable th h1 {
+        font-weight: bold;
+        font-size: 1em;
+        text-align: left;
+        color: #185875;
+    }
+    
+    .containertable td {
+        font-weight: normal;
+        font-size: 1em;
+        -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+        -moz-box-shadow: 0 2px 2px -2px #0E1119;
+        box-shadow: 0 2px 2px -2px #0E1119;
+    }
+    
+    .containertable {
+        text-align: left;
+        overflow: hidden;
+        width: 80%;
+        margin: 0 auto;
+        display: table;
+        padding: 0 0 8em 0;
+    }
+    
+    .containertable td,
+    .containertable th {
+        padding-bottom: 2%;
+        padding-top: 2%;
+        padding-left: 2%;
+    }
+    /* Background-color of the odd rows */
+    
+    .containertable tr:nth-child(odd) {
+        background-color: #202F2B;
+    }
+    /* Background-color of the even rows */
+    
+    .containertable tr:nth-child(even) {
+        background-color: #124636;
+    }
+    
+    .containertable th {
+        /*background-color: rgba(26, 81, 107, 0.68);*/
+    }
+    
+    .containertable tr:hover {
+        background-color: #464A52;
+        -webkit-box-shadow: 0 6px 6px -6px #0E1119;
+        -moz-box-shadow: 0 6px 6px -6px #0E1119;
+        box-shadow: 0 6px 6px -6px #0E1119;
+    }
+    
+    .containertable tbody tr:hover {
+        background-color: #FFF842;
+        color: #403E10;
+        font-weight: bold;
+        box-shadow: #7F7C21 -1px 1px, #7F7C21 -1px 1px, #7F7C21 -1px 1px, #7F7C21 -1px 1px, #7F7C21 -1px 1px, #7F7C21 -1px 1px;
+        transform: translate3d(1px, -1px, 0);
+        transition-delay: 0s;
+        transition-duration: 0.4s;
+        transition-property: all;
+        transition-timing-function: line;
+    }
+    
+    @media (max-width: 800px) {
+        .containertable td:nth-child(4),
+        .containertable th:nth-child(4) {
+            display: none;
+        }
+    }
+    
+    .panel {
+        background-color: rgba(31, 39, 57, 0.31);
+        border: 0px solid transparent;
+        box-shadow: 0 0px 0px rgba(0, 0, 0, .05);
+    }
+    
+    body {
+        color: white;
+        background: #43cea2;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #43cea2, #185a9d);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #43cea2, #185a9d);
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+    
+    .table>tbody>tr>td,
+    .table>tbody>tr>th,
+    .table>tfoot>tr>td,
+    .table>tfoot>tr>th,
+    .table>thead>tr>td,
+    .table>thead>tr>th {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 2px solid #174418;
+    }
+    </style>
+    <script type="text/javascript">
+    function modifyTrip(tripID) {
+        console.log("tripmodify with ID:" + tripID);
+
+        window.location.replace("/modifypost/" + tripID);
+        //$.get("/tripdetail/" + tripID, function(data) {});
+    }
+
+    function modifyRequestedTrip(requestID) {
+        console.log("requestedtripmodify with ID:" + requestID);
+
+        window.location.replace("/modifyrequest/" + requestID);
+        //$.get("/tripdetail/" + tripID, function(data) {});
+    }
+
+    function deleteTrip(tripID) {
+        console.log("tripdelete with ID:" + tripID);
+
+        $.post("/api/trip/deleteTrip/" + tripID, {
+            id: tripID
+        }).done(function(data) {
+            window.location.replace('/personal');
+        });
+    }
+
+    function deleteRequestedTrip(requestID) {
+        console.log("requestedtripdelete with ID:" + requestID);
+
+        $.post("/api/request/deletePassengerRequest/" + requestID, {
+            id: requestID
+        }).done(function(data) {
+            window.location.replace('/personal');
+        });
+    }
+
+    function viewRequestedTrip(tripID) {
+        console.log("tripclicked with ID:" + tripID);
+
+        window.location.replace("/requestedtripdetail/" + tripID);
+        //$.get("/tripdetail/" + tripID, function(data) {});
+    }
+
+
+    function logout() {
+        $.post("api/user/logout", function(data) {
+            if (data == "logged out")
+                window.location.replace('/login');
+        });
+    }
+    var navwidth = $('#navid').width();
+    var cityResult = '';
+    $(document).ready(function() {
+        $.get("/getCurrentUserType", function(data) {
+            if (data === 'Passenger') {
+                $('#provideOption').hide();
+            }
+        });
+        //filterable table
+        'use strict';
+
+        var LightTableFilter = (function(Arr) {
+
+            var _input;
+
+            function _onInputEvent(e) {
+                _input = e.target;
+                var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+                Arr.forEach.call(tables, function(table) {
+                    Arr.forEach.call(table.tBodies, function(tbody) {
+                        Arr.forEach.call(tbody.rows, _filter);
+                    });
+                });
+            }
+
+            function _filter(row) {
+                var text = row.textContent.toLowerCase(),
+                    val = _input.value.toLowerCase();
+                row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+            }
+
+            return {
+                init: function() {
+                    var inputs = document.getElementsByClassName('light-table-filter');
+                    Arr.forEach.call(inputs, function(input) {
+                        input.oninput = _onInputEvent;
+                    });
+                }
+            };
+        })(Array.prototype);
+
+        document.addEventListener('readystatechange', function() {
+            if (document.readyState === 'complete') {
+                LightTableFilter.init();
+            }
+        });
+        var LightTableFilter1 = (function(Arr) {
+
+            var _input;
+
+            function _onInputEvent(e) {
+                _input = e.target;
+                var tables = document.getElementsByClassName(_input.getAttribute('data-table1'));
+                Arr.forEach.call(tables, function(table) {
+                    Arr.forEach.call(table.tBodies, function(tbody) {
+                        Arr.forEach.call(tbody.rows, _filter);
+                    });
+                });
+            }
+
+            function _filter(row) {
+                var text = row.textContent.toLowerCase(),
+                    val = _input.value.toLowerCase();
+                row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+            }
+
+            return {
+                init: function() {
+                    var inputs = document.getElementsByClassName('light-table-filter1');
+                    Arr.forEach.call(inputs, function(input) {
+                        input.oninput = _onInputEvent;
+                    });
+                }
+            };
+        })(Array.prototype);
+
+        document.addEventListener('readystatechange', function() {
+            if (document.readyState === 'complete') {
+                LightTableFilter.init();
+            }
+        });
+        //end of table
+
+
+        filterTrips();
+        
+
+    });
+
+    function filterTrips() {
+        $.get("/getCurrentUserID", function(ID) {
+            $.ajax({
+                type: "GET",
+                url: '/api/trip/getTripsByUserId/' + ID,
+                success: function(data) {
+                    $('#tableID').append('<tbody style="height:200px;">');
+                    $(data).each(function(index, element) {
+                        console.log(index);
+                        console.log(element);
+                        //if (element['City'].toLowerCase().indexOf(cityResult.toLowerCase()) >= 0)
+                        $('#tableID').append('<tr class="containertables"><td width="10%">' + element['City'] + '</td><td cwidth="20%">' + element['DepartureLocation'] + '</td>' + '<td width="20%">' + element['DestinationLocation'] + '</td>' + '<td width="10%">' + element['DepartureTime'] + '</td>' + '<td width="10%">' + element['AvailableSeats'] + '</td>' + '<td width="10%">' + element['Price'] + '</td><td width="10%" onclick="modifyTrip(\'' + element['_id'] + '\')"><img src="../images/modifysmall.png"></td>' + '<td width="10%" onclick="deleteTrip(\'' + element['_id'] + '\')"><img src="../images/deletesmall.png"></td></tr>');
+                    }); //onclick="viewTrip(\'' + element['_id'] + '\')"
+                    $('#tableID').append('</tbody></table>');
+                    console.log(data);
+
+                },
+                dataType: 'json'
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '/api/request/getRequestsByUserId/' + ID,
+                success: function(data) {
+                    $('#tableID2').append('<tbody style="height:200px">');
+                    $(data).each(function(index, element) {
+                        console.log(index);
+                        console.log(element);
+                        //if (element['City'].toLowerCase().indexOf(cityResult.toLowerCase()) >= 0)
+                        $('#tableID2').append('<tr class="containertables"><td width="10%">' + element['City'] + '</td><td width="20%">' + element['DepartureLocation'] + '</td>' + '<td width="20%">' + element['DestinationLocation'] + '</td>' + '<td width="20%">' + element['DepartureTime'] + '</td>' + '<td width="10%">' + element['RequestedSeats'] + '</td><td width="10%" onclick="modifyRequestedTrip(\'' + element['_id'] + '\')"><img src="../images/modifysmall.png"></td>' + '<td width="10%" onclick="deleteRequestedTrip(\'' + element['_id'] + '\')"><img src="../images/deletesmall.png"></td></tr>');
+                    });
+                    $('#tableID2').append('</tbody></table>');
+                    console.log(data);
+
+                },
+                dataType: 'json'
+            });
+        });
+
+
+    }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- <a class="navbar-brand" href="#">TravelEasy</a> -->
+                <img class="navbar-brand" alt="Travel Easy" src="../images/pic3.png" width="60px" style="margin-top: 0px; " />
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/main">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="/personal">My Trips</a>
+                    </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Post Trips <span class="caret"></span>
+    </a>
+                        <ul class="dropdown-menu">
+                            <li id="provideOption">
+                                <a href="/post" id="post_click">Provide Trip</a>
+                            </li>
+                            <li id="requestOption">
+                                <a href="/request" id="request_click">Request Trip</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" onclick="logout();">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 " id="table-container">
+                        <h3>Trips Provided</h3>
+                        <input type="search" class="light-table-filter form-control" data-table="order-table" placeholder="Filter">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <table class="table table-fixedheader  order-table containertable" id="tableID" style="text-align: left;">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">City</th>
+                                            <th width="20%">Departure Location</th>
+                                            <th width="20%">Destination</th>
+                                            <th width="10%">Date</th>
+                                            <th width="10%">Seats</th>
+                                            <th width="10%">Price</th>
+                                            <th width="10%">Modify</th>
+                                            <th width="10%">Delete</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 " id="table-container">
+                        <h3>Trips Requested</h3>
+                        <input type="search" class="light-table-filter form-control" data-table="order-table" placeholder="Filter">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <table class="table table-fixedheader  order-table1 table-responsive containertable" id="tableID2" style="text-align: left;">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">City</th>
+                                            <th width="20%">Departure Location</th>
+                                            <th width="20%">Destination</th>
+                                            <th width="20%">Date</th>
+                                            <th width="10%">Seats</th>
+                                            <th width="10%">Modify</th>
+                                            <th width="10%">Delete</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

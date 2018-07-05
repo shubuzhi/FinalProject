@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Reset Your Password</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/animate.css"></link>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+        color: white;
+        background: #43cea2;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #43cea2, #185a9d);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #43cea2, #185a9d);
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+    .help-block{
+        color: rgba(255, 255, 255, 0.47);
+    }
+    </style>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        console.log(window.location.pathname);
+        $('#resetbutton').click(function(){
+        	var pathname = window.location.pathname;
+        	var part = pathname.substring(pathname.lastIndexOf('/') + 1);
+            password = $("#passwordinput").val();
+            console.log(password);
+            $.post('/api/user/update/password/'+part, {
+                password: password
+            }, function(data) {
+
+                if(typeof data=="object"){
+                var output = '';
+
+                $(data).each(function(index, element) {
+                       
+                    output += element['msg'] + '\n';
+
+                });
+                alert(output);
+             }   
+             else {
+                window.location.replace('/login');
+             }
+            	
+            });
+        });
+});
+        // function reset() {
+        //     var pathname = window.location.pathname;
+        //     var part = pathname.substring(pathname.lastIndexOf('/') + 1);
+        //      password = $('#passwordinput').val();
+
+        //     console.log(password);
+        //     // $.post('/api/user/update/password/'+part, {
+        //     //     password: password
+        //     // }, function(data) {
+        //     // 	console.log(data);
+        //     // });
+        // }
+
+    
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">
+				Enter new password
+			</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="passwordinput">
+                                    Password
+                                </label>
+                                <input type="password" class="form-control" id="passwordinput" />
+                            </div>
+                            <button type="button" class="btn btn-default" id="resetbutton" >
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

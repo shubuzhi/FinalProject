@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Welcome to TravelEasy</title>
+    <link rel="shortcut icon" href="../images/favicon.ico" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/animate.css"></link>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style type="text/css">
+    /* LAYOUT */
+    
+    html,
+    body,
+    .glass::before {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: url(../images/bg.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    
+    article,
+    .glass::before {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .glass {
+        position: relative;
+    }
+    
+    .glass::before {
+        z-index: -1;
+        display: block;
+        position: absolute;
+        content: ' ';
+    }
+    /* BACKGROUNDS */
+    
+    body {
+        background-image: url('../images/bg.jpg');
+        background-size: cover;
+    }
+    
+    .glass::before {
+        background-image: url('../images/bg.jpg');
+        /* Prefix free isn't picking up this one */
+        -webkit-filter: url('#blur');
+        filter: url('#blur');
+        -webkit-filter: blur(5px);
+        filter: blur(5px);
+        background-size: cover;
+        opacity: 0.4;
+    }
+    
+    .glass {
+        background-color: white;
+    }
+    /* TRANSFORMATIONS */
+    
+    .glass.down {
+        /* Fallback for browsers that don't support 3D Transforms */
+        transform: translateY(100%) translateY(-7rem);
+        transform: translateY(100%) translateY(-7rem) translateZ(0);
+    }
+    
+    .glass.down::before {
+        transform: translateY(-100%) translateY(7rem);
+        transform: translateY(-100%) translateY(7rem) translateZ(0);
+    }
+    
+    .glass.up,
+    .glass.up::before {
+        transform: translateY(0);
+        transform: translateY(0) translateZ(0);
+    }
+    /* TRANSITIONS */
+    
+    .preload * {
+        /* wait until document is loaded before transitioning */
+        transition: none !important;
+    }
+    
+    .glass,
+    .glass::before {
+        transition: transform 0.5s ease-out;
+    }
+    /* TYPOGRAPHY, ETC */
+    
+    h1 {
+        font-size: 5rem;
+        line-height: 1.4;
+        font-weight: bold;
+        text-align: center;
+        padding: 0 7rem;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+    
+    h1::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/28727/double-chevron-up.svg');
+        content: ' ';
+        display: block;
+        width: 7rem;
+        height: 7rem;
+        transition: transform 0.2s ease-out 0.5s;
+    }
+    
+    .up h1::before {
+        transform: rotate(180deg);
+    }
+    
+    em {
+        font-style: normal;
+        font-weight: bold;
+    }
+    
+    p {
+        font-size: 1.8rem;
+        line-height: 1.4;
+        max-width: 30em;
+        margin: 1.4em auto;
+        padding: 0 1em;
+    }
+    
+    @media (max-width: 500px),
+    (max-height: 300px) {
+        p.unimportant {
+            display: none;
+        }
+        p {
+            font-size: 1.4rem;
+            margin: 0.5em auto;
+        }
+        h1 {
+            font-size: 5rem;
+            margin: 0.5em auto;
+        }
+    }
+    .panel {
+    margin-bottom: 20px;
+    background-color: rgba(232, 243, 248, 0.4);
+    border: 1px solid transparent;
+    border-radius: 0px; 
+    }
+    .panel-info>.panel-heading {
+    /* color: #31708f; */
+    background-color: rgba(217, 237, 247, 0);
+    border:none;
+}
+    </style>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        // other functions
+        $('#registrationbutton').click(function() {
+            if ($("#reg_username").val() != null && $("#reg_password").val() != null) {
+                email = $("#reg_username").val();
+                password = $("#reg_password").val();
+                City = $("#reg_city").val();
+                PhoneNumber = $("#reg_phone").val();
+                //checked = $("#reg_username").is(":checked");
+                CarType = $("#reg_carmakeandmodel").val();
+                CarYear = $("#reg_caryear").val();
+                CarLicensePlateNumber = $("#reg_carlicense").val();
+                if ($("#drivercheck").is(":checked") === true) {
+                    UserType = "Driver";
+                } else {
+                    UserType = "Passenger";
+                }
+
+                // $.ajaxSetup({
+                //     headers: {
+                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                //     }
+                // });
+                $.post("/postregister", {
+
+                    email: email,
+                    password: password,
+                    City: City,
+                    PhoneNumber: PhoneNumber,
+                    UserType: UserType,
+                    CarType: CarType,
+                    CarYear: CarYear,
+                    CarLicensePlateNumber: CarLicensePlateNumber
+
+                }, function(data) {
+                    if(typeof data=="object")
+                    {
+                        var output = '';
+
+                        $(data).each(function(index, element) {
+                       
+                                output += element['msg'] + '\n';
+
+                        });
+                        alert(output);
+                        //window.location.replace('/login');
+                    }
+                    else
+                    {
+                        alert(data);
+                        window.location.replace('/main');
+                    }                    
+
+                });
+            } else {
+                alert('Please fill in username/password and other required fields.');
+            }
+
+        });
+
+
+        $('#loginbutton').click(function() {
+
+            email = $("#log_username").val();
+
+            password = $("#log_password").val();
+
+
+            $.post("/api/user/login", {
+                email: email,
+                password: password
+            }, function(data) {
+
+                if (data == 'logged in') {
+                    window.location.replace('/main');
+                } else if (data == 'no user found') {
+                    alert('Cannot find user');
+                }
+                else{
+                     if(typeof data=="object"){
+                        var output = '';
+
+                        $(data).each(function(index, element) {
+                       
+                            output += element['msg'] + '\n';
+
+                        });
+                        alert(output);
+                    }   
+                    else {
+                        alert(data);
+                    }
+                }
+            });
+        });
+
+        $('#resetbutton').click(function(){
+            email = $("#reset_username").val();
+            $.post("/api/user/resetpassword", {
+                email: email,
+            }, function(data) {
+                if(typeof data=="object"){
+                var output = '';
+
+                $(data).each(function(index, element) {
+                       
+                    output += element['msg'] + '\n';
+
+                });
+                alert(output);
+             }   
+             else {
+                alert(data);
+             }
+            });
+        });
+
+
+    });
+
+    function toggle() {
+        var button = document.querySelector('.toggle');
+        var overlay = document.querySelector('.glass');
+        if (overlay.className === 'glass down') {
+            overlay.className = 'glass up';
+        } else {
+            overlay.className = 'glass down';
+        }
+    }
+    //end of document.ready()
+    function valueChanged() {
+        if ($('#drivercheck').is(":checked")) {
+           // alert($('#drivercheck').is(":checked"));
+            $(".driver").show();
+        } else {
+
+            $(".driver").hide();
+            //alert($('#drivercheck').is(":checked"));
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid" style=" position: absolute; background:rgba(25, 25, 25, .5);">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-sm-12">
+                            <img alt="Travel Easy" src="../images/pic.png" width="90%" style="margin-top: 10px; " />
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <article class='glass down'>
+        <h1 class='toggle' onclick='toggle()' style="margin-bottom: 10px;top: 10px;">Let's TravelEasy</h1>
+        <div class="row animated slideInUp" style="-webkit-animation-delay: 1s;">
+            <div class="container">
+                <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Sign In</div>
+                            <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#" onclick="$('#loginbox').hide(); $('#resetbox').show()">Forgot password?</a></div>
+                        </div>
+                        <div style="padding-top:30px" class="panel-body">
+                            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            <form id="loginform" class="form-horizontal" role="form">
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="log_username" type="text" class="form-control" name="username" value="" placeholder="username or email">
+                                </div>
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input id="log_password" type="password" class="form-control" name="password" placeholder="password">
+                                </div>
+                                <div class="input-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                        </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-sm-12 controls">
+                                        <a id="loginbutton" href="#" class="btn btn-success">Login  </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 control">
+                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                            Don't have an account!
+                                            <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                            Sign Up Here
+                                        </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Sign Up</div>
+                            <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a></div>
+                        </div>
+                        <div class="panel-body">
+                            <form id="signupform" class="form-horizontal" role="form">
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="col-md-3 control-label">Email
+                                    </label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="email" placeholder="Email Address" id="reg_username">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-md-3 control-label">Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" name="password" id="reg_password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="City" class="col-md-3 control-label">City</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="City" placeholder="City" id="reg_city">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Phone Number" class="col-md-3 control-label">Phone Number</label>
+                                    <div class="col-md-9">
+                                        <input type="tel" class="form-control" name="Phone Number" placeholder="Phone Number" id="reg_phone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Type" class="col-md-3 control-label">Be a Driver ?</label>
+                                    <div class="col-md-9">
+                                        <input type="checkbox" class="form-control" name="Type" onchange="valueChanged()" id="drivercheck">
+                                    </div>
+                                </div>
+                                <div class="form-group driver" hidden>
+                                    <label for="Car make and model" class="col-md-3 control-label">Car make and model</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Car make and model" id="reg_carmakeandmodel">
+                                    </div>
+                                </div>
+                                <div class="form-group driver" hidden>
+                                    <label for="Year" class="col-md-3 control-label">Year</label>
+                                    <div class="col-md-9">
+                                        <input type="number" class="form-control" name="Year" id="reg_caryear">
+                                    </div>
+                                </div>
+                                <div class="form-group driver" hidden>
+                                    <label for="License Number" class="col-md-3 control-label">License Plate Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="License Number" id="reg_carlicense">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="registrationbutton" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="resetbox" style="display:none;margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Password Reset</div>
+                            <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#" onclick="$('#resetbox').hide(); $('#loginbox').show()">Log in</a></div>
+                        </div>
+                        <div style="padding-top:30px" class="panel-body">
+                            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            <form id="loginform" class="form-horizontal" role="form">
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="reset_username" type="text" class="form-control" name="username" value="" placeholder="Your email address">
+                                </div>
+                                
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-sm-12 controls">
+                                        <a id="resetbutton" href="#" class="btn btn-success">Send</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 control">
+                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                            Don't have an account!
+                                            <a href="#" onClick="$('#resetbox').hide(); $('#signupbox').show()">
+                                            Sign Up Here
+                                        </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <filter id="blur">
+                <feGaussianBlur stdDeviation="5" />
+            </filter>
+        </defs>
+    </svg>
+</body>
+
+</html>
